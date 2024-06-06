@@ -5,12 +5,14 @@ import { FaPlane } from "react-icons/fa";
 const Index = () => {
   const [inputData, setInputData] = useState("");
   const [prediction, setPrediction] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (e) => {
     setInputData(e.target.value);
   };
 
   const handlePredict = async () => {
+    setLoading(true);
     try {
       const response = await fetch("https://api.example.com/predict", {
         method: "POST",
@@ -23,7 +25,9 @@ const Index = () => {
       setPrediction(result.prediction.toFixed(2));
     } catch (error) {
       console.error("Error fetching prediction:", error);
-      setPrediction("Error fetching prediction");
+      setPrediction("Unable to fetch prediction. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,7 +40,7 @@ const Index = () => {
         <IconButton aria-label="Aviator Bot" icon={<FaPlane />} size="lg" isRound />
         <Text fontSize="lg">Enter your data to predict how far the jet will fly:</Text>
         <Input placeholder="Enter data" value={inputData} onChange={handleInputChange} />
-        <Button colorScheme="teal" onClick={handlePredict}>
+        <Button colorScheme="teal" onClick={handlePredict} isLoading={loading}>
           Predict
         </Button>
         {prediction && (
