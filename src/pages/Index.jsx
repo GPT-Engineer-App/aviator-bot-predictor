@@ -25,7 +25,7 @@ const Index = () => {
       setPrediction(result.prediction.toFixed(2));
     } catch (error) {
       console.error("Error fetching prediction:", error);
-      setPrediction("Unable to fetch prediction. Please try again later.");
+      setPrediction("Error: Unable to fetch prediction. Please try again later.");
     } finally {
       setLoading(false);
     }
