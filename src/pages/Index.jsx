@@ -10,11 +10,21 @@ const Index = () => {
     setInputData(e.target.value);
   };
 
-  const handlePredict = () => {
-    // Placeholder for prediction logic
-    // You would replace this with a call to your backend prediction API
-    const mockPrediction = Math.random() * 100; // Mock prediction value
-    setPrediction(mockPrediction.toFixed(2));
+  const handlePredict = async () => {
+    try {
+      const response = await fetch("https://api.example.com/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: inputData }),
+      });
+      const result = await response.json();
+      setPrediction(result.prediction.toFixed(2));
+    } catch (error) {
+      console.error("Error fetching prediction:", error);
+      setPrediction("Error fetching prediction");
+    }
   };
 
   return (
